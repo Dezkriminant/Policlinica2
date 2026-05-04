@@ -1,25 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using MySqlConnector;
 
 namespace Policlinica.DB;
 
-public class UserRepository
+public class UserRepository:BaseRep
 {
-    MySqlConnection connection;
-
-    public UserRepository(IOptions<DatabaseConnection> connect)
+    public UserRepository(IOptions<DatabaseConnection> dataBaseConnection) : base(dataBaseConnection)
     {
-        connection = new MySqlConnection(connect.Value.ConnectionString);
+        OpenConnection();
     }
 
-
-    public void InsertUser(User user)
+    public void AddUser(User user)
     {
-        var sql1 = "INSERT INTO Polyclinica.users (id, name, password) VALUES (0, @name, @password); ";
-        var sql2 = "SELECT max(id) as id FROM Polyclinica.users;";
-
+        string sql = @"insert into `users`values(0,@name,@password)";
+        try
+        {
+            using (var mc = new MySqlCommand(sql, connection))
+            {
+                mc.Parameters.AddWithValue("id", user.Id);
+                mc.Parameters.AddWithValue("name", user.Name );
+                mc.Parameters.AddWithValue("password", user.Password);
+                mc.ExecuteNonQuery();
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            
+        }
     }
 
 
@@ -44,8 +55,7 @@ public class UserRepository
                     });
                 }
             }
-
-            connection.Close();
+            
         }
         catch (MySqlException ex)
         {
@@ -90,4 +100,12 @@ public class UserRepository
 
         return us;
     }
+
+    public void Dispose()
+    {
+        base.Dispose();
+        CloseConnection();
+    }
+
+   
 }

@@ -1,13 +1,11 @@
-<Window xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:Policlinica.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="Policlinica.Views.PasswordWindow"
-        x:DataType="vm:PasswordWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="Policlinica">
+        x:Class="Policlinica.Views.AutorizationView"
+        x:DataType="vm:AutorizationViewModel">
 
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         
@@ -17,10 +15,11 @@
         <TextBox Text="{Binding Username}"/>
         <TextBlock Text="Пароль:" />
         <TextBox Text="{Binding Password}"/>
-        <Button Content="Продолжить" 
-                Command="{Binding SaveDBCommand}"/>
-        <Button Content="Регистрация" 
-                Command="{Binding    }"/>
-        
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Продолжить" 
+                    Command="{Binding SaveDBCommand}"/>
+            <HyperlinkButton Content="Регистрация" 
+                    Command="{Binding OpenRegWinCommand}"/>
+         </StackPanel>
     </StackPanel>
-</Window>
+</UserControl>

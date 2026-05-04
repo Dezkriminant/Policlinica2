@@ -28,14 +28,26 @@ sealed class Program
                 s.Configure<DatabaseConnection>(c.Configuration.
                     GetSection("DatabaseConnection"));
                     //окна
-                s.AddTransient<PasswordWindow>();
-                s.AddTransient<PasswordWindowViewModel>();
+                s.AddTransient<AutorizationView>();
+                s.AddTransient<AutorizationViewModel>();
+                
                 s.AddTransient<AdminWindow>();
                 s.AddTransient<AdminWindowViewModel>();
                 
                 //Репозитории
                 s.AddTransient<DoctorRepository>();
                 s.AddTransient<UserRepository>();
+                
+                s.AddTransient<RegistrationViewModel>();
+                s.AddTransient<RegistrationView>();
+                
+                s.AddTransient<StartViewModel>();
+                s.AddTransient<Startview>();
+                
+                s.AddSingleton<Navigation>();
+                
+                s.AddTransient<Records>();
+                s.AddTransient<RecordViewModel>();
             }).
             Build();
         BuildAvaloniaApp(host.Services)

@@ -5,14 +5,13 @@ using MySqlConnector;
 
 namespace Policlinica.DB;
 
-public class DoctorRepository
+public class DoctorRepository:BaseRep
 {
-    MySqlConnection connection;
-
-    public DoctorRepository(IOptions<DatabaseConnection> connect)
+    public DoctorRepository(IOptions<DatabaseConnection> dataBaseConnection) : base(dataBaseConnection)
     {
-        connection = new MySqlConnection(connect.Value.ConnectionString);
+        OpenConnection();
     }
+
     public List<Doctor> GetDoctorsByTest()
     {
         List<Doctor> result = new List<Doctor>();
@@ -47,6 +46,12 @@ public class DoctorRepository
         }
 
         return result;
+    }
+
+    public void Dispose()
+    {
+        base.Dispose();
+        CloseConnection();
     }
 }
     

@@ -14,6 +14,11 @@ public partial class App : Application
 {
     private readonly IServiceProvider _serviceProvider;
 
+    public App( )
+    {
+        
+    }
+
     public App(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
@@ -32,8 +37,9 @@ public partial class App : Application
             
             DisableAvaloniaDataAnnotationValidation();
             
-            var vm = _serviceProvider.GetRequiredService<PasswordWindowViewModel>();
-            var win = _serviceProvider.GetRequiredService<PasswordWindow>();
+            var vm = _serviceProvider.GetRequiredService<StartViewModel>();
+            var win = _serviceProvider.GetRequiredService<Startview>();
+            vm.SetClose(win.Close);
             win.DataContext = vm;
             desktop.MainWindow = win;
         }

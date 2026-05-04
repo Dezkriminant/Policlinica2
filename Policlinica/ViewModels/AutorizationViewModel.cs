@@ -8,18 +8,21 @@ using Policlinica.Views;
 
 namespace Policlinica.ViewModels;
 
-public partial class PasswordWindowViewModel : ViewModelBase
+public partial class AutorizationViewModel : ViewModelBase
 {
-    private readonly IServiceProvider _serviceProvider;
     private readonly IServiceProvider _provider;
-    [ObservableProperty] string username;
-    [ObservableProperty] string password;
+    private readonly Navigation _navigation;
+
+    [ObservableProperty] string _username;
+    [ObservableProperty] string _password;
     [ObservableProperty] List<User> _usersList;
     [ObservableProperty] UserRepository _repository;
 
-    public PasswordWindowViewModel(IServiceProvider provider, UserRepository repository )
+    public AutorizationViewModel(IServiceProvider provider, UserRepository repository,Navigation navigation )
     {
         _provider = provider;
+        _navigation = navigation;
+
         _usersList = repository.GetUsersByTest();
        // _repository = repository;
     }
@@ -47,13 +50,21 @@ public partial class PasswordWindowViewModel : ViewModelBase
             Password = Password
         };
        // if(Users user )
-        _repository.CheckLoginAndPassword(name,password);
-        var vm = _serviceProvider.GetRequiredService<AdminWindowViewModel>();
-        var win = _serviceProvider.GetRequiredService<AdminWindow>();
+        _repository.CheckLoginAndPassword(Username,Password);
+        var vm = _provider.GetRequiredService<AdminWindowViewModel>();
+        var win = _provider.GetRequiredService<AdminWindow>();
         
         //vm.SetClose(win.Close);
         win.DataContext = vm;
         win.Show();
         //close();
+    }
+
+    [RelayCommand]
+    void OpenRegWin()
+    {
+        var vm = _provider.GetRequiredService<RegistrationViewModel>();
+        _navigation.Navigate(vm);
+        
     }
 }

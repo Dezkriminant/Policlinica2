@@ -17,4 +17,5 @@ public class Record
     public decimal TotalAmount { get; set; }
     
     public DateTime RecordDate { get; set; }
+    
 }
