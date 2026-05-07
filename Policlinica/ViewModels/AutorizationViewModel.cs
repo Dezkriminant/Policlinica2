@@ -22,7 +22,7 @@ public partial class AutorizationViewModel : ViewModelBase
         _provider = provider;
         _navigation = navigation;
     }
-
+/*
     [RelayCommand]
     public void StartTest()
     {
@@ -36,7 +36,7 @@ public partial class AutorizationViewModel : ViewModelBase
         win.Show();
         // close();
     }
-
+*/
     [RelayCommand]
     public void Conti()
     {
@@ -55,11 +55,12 @@ public partial class AutorizationViewModel : ViewModelBase
 
 
         var vm = _provider.GetRequiredService<AdminWindowViewModel>();
-        var win = _provider.GetRequiredService<AdminWindow>();
+      //  var win = _provider.GetRequiredService<AdminWindow>();
+        _navigation.Navigate(vm);
         //vm.SetClose(win.Close);
-        win.DataContext = vm;
-        win.Show();
-            //Сlose();
+       // win.DataContext = vm;
+        //win.Show();
+        //Сlose();
     }
 
 

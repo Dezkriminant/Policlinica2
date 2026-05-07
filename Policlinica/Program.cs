@@ -31,7 +31,7 @@ sealed class Program
                 s.AddTransient<AutorizationView>();
                 s.AddTransient<AutorizationViewModel>();
                 
-                s.AddTransient<AdminWindow>();
+                s.AddTransient<AdminWindowView>();
                 s.AddTransient<AdminWindowViewModel>();
                 
                 //Репозитории
