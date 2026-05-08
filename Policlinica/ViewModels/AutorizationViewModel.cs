@@ -61,6 +61,7 @@ public partial class AutorizationViewModel : ViewModelBase
        // win.DataContext = vm;
         //win.Show();
         //Сlose();
+        
     }
 
 

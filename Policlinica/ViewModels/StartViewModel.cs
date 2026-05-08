@@ -12,7 +12,7 @@ public partial class StartViewModel:ViewModelBase
     public StartViewModel(IServiceProvider sv, Navigation navigation)
     {
         _navigation = navigation;
-        _navigation.SetCurrentView(this);
+        _navigation.SetCurrentView(this);   
         _navigation.Navigate(sv.GetRequiredService<AutorizationViewModel>());
     }
 

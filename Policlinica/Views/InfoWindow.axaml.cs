@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Policlinica.Views;
 
-public partial class AdminWindowView : UserControl
+public partial class InfoWindow : Window
 {
-    public AdminWindowView()
+    public InfoWindow()
     {
         InitializeComponent();
     }

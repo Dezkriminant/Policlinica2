@@ -18,4 +18,6 @@ public class Navigation
     {
         this.startViewModel.Close();
     }
+
+  
 }

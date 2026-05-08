@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\vikto\\RiderProjects\\Policlinica\\Policlinica\\Policlinica.csproj": {}
+    "C:\\Users\\artem\\RiderProjects\\Policlinica1\\Policlinica\\Policlinica.csproj": {}
   },
   "projects": {
-    "C:\\Users\\vikto\\RiderProjects\\Policlinica\\Policlinica\\Policlinica.csproj": {
+    "C:\\Users\\artem\\RiderProjects\\Policlinica1\\Policlinica\\Policlinica.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\vikto\\RiderProjects\\Policlinica\\Policlinica\\Policlinica.csproj",
+        "projectUniqueName": "C:\\Users\\artem\\RiderProjects\\Policlinica1\\Policlinica\\Policlinica.csproj",
         "projectName": "Policlinica",
-        "projectPath": "C:\\Users\\vikto\\RiderProjects\\Policlinica\\Policlinica\\Policlinica.csproj",
-        "packagesPath": "C:\\Users\\vikto\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\vikto\\RiderProjects\\Policlinica\\Policlinica\\obj\\",
+        "projectPath": "C:\\Users\\artem\\RiderProjects\\Policlinica1\\Policlinica\\Policlinica.csproj",
+        "packagesPath": "C:\\Users\\artem\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\artem\\RiderProjects\\Policlinica1\\Policlinica\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\vikto\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\artem\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -47,6 +47,10 @@
             "Avalonia": {
               "target": "Package",
               "version": "[11.3.11, )"
+            },
+            "Avalonia.Controls.DataGrid": {
+              "target": "Package",
+              "version": "[11.3.9, )"
             },
             "Avalonia.Desktop": {
               "target": "Package",
@@ -88,6 +92,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[9.0.15, 9.0.15]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[9.0.15, 9.0.15]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[9.0.15, 9.0.15]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[9.0.15, 9.0.15]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"

@@ -8,19 +8,20 @@
         x:DataType="viewModels:AdminWindowViewModel">
         
         <Grid RowDefinitions="Auto,*,Auto" Margin="20">
-                <ListBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding  }">
-                        <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                                <CheckBox IsChecked="{Binding }" ></CheckBox>
-                                                <TextBlock Text="{Binding }"></TextBlock>
-                                                <TextBlock Text="{Binding }"></TextBlock>
-                                        </StackPanel>
-                                </DataTemplate>
-                        </ListBox.ItemTemplate>
-                </ListBox> 
+               <DataGrid ItemsSource="{Binding RecordsList }" SelectedItem="{Binding SelectedRecord }">
+                   <DataGrid.Columns>
+                       <DataGridTextColumn Binding="{Binding ClientName}" Header="Имя клиента"/>
+                       <DataGridTextColumn Binding="{Binding ClientSurname}" Header="Фамилия клиента"/>
+                       <DataGridTextColumn Binding="{Binding Title}" Header="Врач"/>
+                       <DataGridTextColumn Binding="{Binding Name}" Header="Логин"/>
+                       <DataGridTextColumn Binding="{Binding RecordDate}" Header="Дата"/>
+                   </DataGrid.Columns>
+               </DataGrid>
+           <StackPanel Grid.Row="2" Orientation="Horizontal">
+                   
            
-                <Button Grid.Row="2" Content="Удалить выбранные работы" FontSize="20" HorizontalAlignment="Center" Command="{Binding }"/>
-                <Button Grid.Row="2" Content="Дабавить запись" FontSize="20" HorizontalAlignment="Center" Command="{Binding }"/>
+                <Button Content="Удалить выбранную работу" FontSize="20" HorizontalAlignment="Center" Command="{Binding }"/>
+                <Button Content="Дабавить запись" FontSize="20" HorizontalAlignment="Center" Command="{Binding }"/>
+           </StackPanel>
         </Grid>
 </UserControl>

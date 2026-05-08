@@ -43,16 +43,25 @@ sealed class Program
                 
                 s.AddTransient<StartViewModel>();
                 s.AddTransient<Startview>();
+
+                s.AddTransient<RecordRep>();
                 
                 s.AddSingleton<Navigation>();
                 
                 s.AddTransient<Records>();
                 s.AddTransient<RecordViewModel>();
+                s.AddTransient<InfoViewModel>();
             }).
             Build();
         BuildAvaloniaApp(host.Services)
             .StartWithClassicDesktopLifetime(args);
     }
+    
+    public static AppBuilder BuildAvaloniaApp()
+        => AppBuilder.Configure<App>()
+            .UsePlatformDetect()
+            .WithInterFont()
+            .LogToTrace();
 
     // Avalonia configuration, don't remove; also used by visual designer.
     public static AppBuilder BuildAvaloniaApp(IServiceProvider serviceProvider)

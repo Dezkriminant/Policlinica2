@@ -18,4 +18,6 @@ public class Record
     
     public DateTime RecordDate { get; set; }
     
+    public string Title { get; set; }
+    public string Name { get; set; }
 }
