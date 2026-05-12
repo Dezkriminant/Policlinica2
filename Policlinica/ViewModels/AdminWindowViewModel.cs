@@ -41,7 +41,7 @@ public partial class AdminWindowViewModel : ViewModelBase
     [RelayCommand]
     void GoService()
     {
-        var vm = _provider.GetRequiredService<ServiceViewModel>();
+        var vm = _provider.GetRequiredService<DoctorViewModel>();
         _navigation.Navigate(vm);
     }
 }
