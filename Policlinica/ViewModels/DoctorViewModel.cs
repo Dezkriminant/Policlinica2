@@ -26,8 +26,6 @@ public partial class DoctorViewModel : ViewModelBase
         _navigation = navigation;
         
         
-        Chuvak.name = Name;
-        Chuvak.surname = Surname;
     }
 
     [RelayCommand]

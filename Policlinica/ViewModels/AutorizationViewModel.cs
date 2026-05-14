@@ -12,15 +12,17 @@ public partial class AutorizationViewModel : ViewModelBase
 {
     private readonly IServiceProvider _provider;
     private readonly Navigation _navigation;
+    private readonly User _user;
 
     [ObservableProperty] string _login;
     [ObservableProperty] string _password;
     [ObservableProperty] public string _eror;
 
-    public AutorizationViewModel(IServiceProvider provider, Navigation navigation)
+    public AutorizationViewModel(IServiceProvider provider, Navigation navigation,User user)
     {
         _provider = provider;
         _navigation = navigation;
+        _user = user;
     }
 
     [RelayCommand]
@@ -32,6 +34,9 @@ public partial class AutorizationViewModel : ViewModelBase
         {
             SpUser = repository.CheckLoginAndPassword(Login, Password);
         }
+
+        _user.Password = Password;
+        _user.Login = Login;
 
         if (SpUser.Count == 0)
         {

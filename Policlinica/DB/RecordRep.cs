@@ -12,7 +12,7 @@ public class RecordRep:BaseRep
         OpenConnection();
     }
 
-    public List<Record> GetRecord()
+    public List<Record> GetRecord(int id)
     {
         List<Record> recordsList = new();
 
@@ -20,11 +20,13 @@ public class RecordRep:BaseRep
                        from records r
                        join doctors d on r.doctor_id = d.id 
                        join users u  on r.user_id  = u.id 
-                       join services s on r.service_id = s.id";
+                       join services s on r.service_id = s.id
+                       where r.user_id = @id ";
         try
         {
             using (var mc = new MySqlCommand(sql, connection))
             {
+                mc.Parameters.AddWithValue("id", id);
                 using (var reader = mc.ExecuteReader())
                 {
                     while (reader.Read())

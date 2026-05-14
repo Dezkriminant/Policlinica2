@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using MySqlConnector;
@@ -136,4 +137,39 @@ public class UserRepository:BaseRep
 
         return us;
     }
+
+
+    public List<User> GetUserId(string name,string password)
+    {
+        List<User> userIdList = new();
+        string sql = @"select * from `users` where `name` = @name and `password` = @password";
+        try
+        {
+
+
+            using (var cm = new MySqlCommand(sql, connection))
+            {
+                cm.Parameters.AddWithValue("@name", name);
+                cm.Parameters.AddWithValue("@password", password);
+                using (var reader = cm.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        userIdList.Add(new User()
+                        {
+                            Id = reader.GetInt32("id"),
+                        });
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+         
+        }
+        return userIdList;
+    }
+
+
 }

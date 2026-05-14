@@ -50,6 +50,8 @@ sealed class Program
                  s.AddTransient<DoctorView>();
                  s.AddTransient<DoctorViewModel>();
                  
+                 s.AddTransient<RecordItemsView>();
+               //  s.AddTransient<RecordItemsViewModel>();
                 //Репозитории
                 s.AddTransient<DoctorRepository>();
                 
@@ -61,6 +63,8 @@ sealed class Program
                 
                 s.AddSingleton<Navigation>();
 
+                s.AddSingleton<RecordItemsRepository>();
+                s.AddSingleton<User>();
                 
                 
                 s.AddTransient<Doctor>();
