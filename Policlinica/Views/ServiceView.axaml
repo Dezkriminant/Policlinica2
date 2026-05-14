@@ -1,0 +1,28 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Policlinica.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Policlinica.Views.ServiceView"
+        x:DataType="viewModels:ServiceViewModel">
+        
+        <Grid RowDefinitions="Auto,*,Auto" Margin="20">
+                
+                <ListBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Services}">
+                        <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                                <CheckBox IsChecked="{Binding IsSelected}" ></CheckBox>
+                                                <TextBlock Text="{Binding Service.ServiceName}"></TextBlock>
+                                                <TextBlock Text="{Binding Service.Price}"></TextBlock>
+                                        </StackPanel>
+                                </DataTemplate>
+                        </ListBox.ItemTemplate>
+                </ListBox> 
+                
+                <TextBlock Text="Выберите услугу" FontSize="20" HorizontalAlignment="Center"/>
+                <Button Grid.Row="2" Content="Продолжить" FontSize="20" HorizontalAlignment="Center" Command="{Binding DobavlenieCommand}"/>
+        </Grid>
+        
+</UserControl>

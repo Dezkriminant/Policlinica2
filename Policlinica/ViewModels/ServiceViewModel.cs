@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia.Animation.Easings;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -15,8 +16,11 @@ public partial class ServiceViewModel : ViewModelBase
 
     private readonly IServiceProvider _provider;
     private readonly Navigation _navigation;
-    [ObservableProperty] List<ServiceSelected> _services;
     ServiceRepository _serviceRepository;
+    
+    [ObservableProperty] string surname;
+    [ObservableProperty] string name;
+    [ObservableProperty]  ObservableCollection<ServiceSelected> _services;
     [ObservableProperty] string _login;
     [ObservableProperty] Doctor _selectedDoctor;
 
@@ -27,7 +31,9 @@ public partial class ServiceViewModel : ViewModelBase
         _navigation = navigation;
         _selectedDoctor = selectedDoctor;
         _serviceRepository = repository;
-        //Services = repository.GetServicesByDoctors(selectedDoctor.Id).Select(service => new ServiceSelected(service)).ToList();
+        Services =  new ObservableCollection<ServiceSelected>(repository.GetServicesByDoctors(selectedDoctor.Id).Select(service => new ServiceSelected(service)).ToList());
+        
+        //Console.WriteLine(CurrentUser.login);
     }
 
 
@@ -46,16 +52,9 @@ public partial class ServiceViewModel : ViewModelBase
                 }
             }
 
-            var vm = ActivatorUtilities.CreateInstance<ServiceViewModel>(
-                _provider,
-                SelectedDoctor,
-                Login,
-                Services);
-            var win = _provider.GetRequiredService<ServiceWindow>();
-          //  vm.SetClose(win.Close);
-            win.DataContext = vm;
-           // win.Show();
-           // close();
+            var vm = ActivatorUtilities.CreateInstance<ServiceViewModel>(_provider, SelectedDoctor);
+            _navigation.Navigate(vm);
+         
         }
 
         }

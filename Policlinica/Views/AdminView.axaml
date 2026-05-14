@@ -4,8 +4,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Policlinica.ViewModels"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="Policlinica.Views.AdminWindowView"
-        x:DataType="viewModels:AdminWindowViewModel">
+        x:Class="Policlinica.Views.AdminView"
+        x:DataType="viewModels:AdminViewModel">
         
         <Grid RowDefinitions="Auto,*,Auto" Margin="20">
                <DataGrid ItemsSource="{Binding RecordsList }" SelectedItem="{Binding SelectedRecord }">

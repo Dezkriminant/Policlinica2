@@ -22,21 +22,7 @@ public partial class AutorizationViewModel : ViewModelBase
         _provider = provider;
         _navigation = navigation;
     }
-/*
-    [RelayCommand]
-    public void StartTest()
-    {
-        var vm = ActivatorUtilities.CreateInstance<AdminWindowViewModel>(
-            _provider,
-            Login,
-            Password);
-        var win = _provider.GetRequiredService<AdminWindow>();
-        //vm.SetClose(win.Close);
-        win.DataContext = vm;
-        win.Show();
-        // close();
-    }
-*/
+
     [RelayCommand]
     public void Conti()
     {
@@ -52,16 +38,11 @@ public partial class AutorizationViewModel : ViewModelBase
             Eror = "Неверный логин или пароль";
             return;
         }
-
-
-        var vm = _provider.GetRequiredService<AdminWindowViewModel>();
-      //  var win = _provider.GetRequiredService<AdminWindow>();
-        _navigation.Navigate(vm);
-        //vm.SetClose(win.Close);
-       // win.DataContext = vm;
-        //win.Show();
-        //Сlose();
         
+        CurrentUser.login = SpUser[0].Name;
+        
+        var vm = ActivatorUtilities.CreateInstance<AdminViewModel>(_provider);
+        _navigation.Navigate(vm);
     }
 
 

@@ -32,8 +32,8 @@ sealed class Program
                 s.AddTransient<AutorizationView>();
                 s.AddTransient<AutorizationViewModel>();
                 
-                s.AddTransient<AdminWindowView>();
-                s.AddTransient<AdminWindowViewModel>();
+                s.AddTransient<AdminView>();
+                s.AddTransient<AdminViewModel>();
                 
                 s.AddTransient<RegistrationViewModel>();
                 s.AddTransient<RegistrationView>();
@@ -44,10 +44,10 @@ sealed class Program
                  s.AddTransient<Records>();
                  s.AddTransient<RecordViewModel>();
                  
-                 s.AddTransient<ServiceWindow>();
+                 s.AddTransient<ServiceView>();
                  s.AddTransient<ServiceViewModel>();
                  
-                 s.AddTransient<DoctoraWindow>();
+                 s.AddTransient<DoctorView>();
                  s.AddTransient<DoctorViewModel>();
                  
                 //Репозитории
@@ -60,6 +60,12 @@ sealed class Program
                 s.AddTransient<RecordRep>();
                 
                 s.AddSingleton<Navigation>();
+
+                
+                
+                s.AddTransient<Doctor>();
+                
+                s.AddTransient<ServiceSelected>();
             }).
             Build();
         BuildAvaloniaApp(host.Services)

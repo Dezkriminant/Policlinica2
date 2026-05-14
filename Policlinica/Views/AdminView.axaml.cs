@@ -1,12 +1,12 @@
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
 namespace Policlinica.Views;
 
-public partial class DoctoraWindow : UserControl
+public partial class AdminView : UserControl
 {
-    public DoctoraWindow()
+    public AdminView()
     {
         InitializeComponent();
     }

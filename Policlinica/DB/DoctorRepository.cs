@@ -15,10 +15,9 @@ public class DoctorRepository:BaseRep
     public List<Doctor> GetDoctorsByTest()
     {
         List<Doctor> result = new List<Doctor>();
-        string sql = "select  * from doctors";
+        string sql = "select * from doctors";
         try
         {
-            connection.Open();
             using (var mc = new MySqlCommand(sql, connection))
             using (var dr = mc.ExecuteReader())
             {
@@ -33,12 +32,6 @@ public class DoctorRepository:BaseRep
                     });
                 }
             }
-
-            connection.Close();
-        }
-        catch (MySqlException ex)
-        {
-            Console.WriteLine(ex);
         }
         catch (Exception e)
         {

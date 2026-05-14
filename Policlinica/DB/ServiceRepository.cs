@@ -18,7 +18,6 @@ public class ServiceRepository : BaseRep
         string sql = "select * from services";
         try
         {
-            connection.Open();
             using (var mc = new MySqlCommand(sql, connection))
             using (var dr = mc.ExecuteReader())
             {
@@ -33,8 +32,6 @@ public class ServiceRepository : BaseRep
                     });
                 }
             }
-
-            connection.Close();
         }
         catch (MySqlException ex)
         {
@@ -54,23 +51,25 @@ public class ServiceRepository : BaseRep
         string sql = "select * from services where doctor_id =@id";
         try
         {
-            connection.Open();
             using (var mc = new MySqlCommand(sql, connection))
-            using (var dr = mc.ExecuteReader())
             {
-                while (dr.Read())
+                mc.Parameters.AddWithValue("@id", id);
+                using (var dr = mc.ExecuteReader())
                 {
-                    s.Add(new Service()
+                    while (dr.Read())
                     {
-                        Id = dr.GetInt32("id"),
-                        DoctorId = dr.GetInt32("doctor_id"),
-                        ServiceName = dr.GetString("service_name"),
-                        Price = dr.GetDecimal("price"),
-                    });
+                        s.Add(new Service()
+                        {
+                            Id = dr.GetInt32("id"),
+                            DoctorId = dr.GetInt32("doctor_id"),
+                            ServiceName = dr.GetString("service_name"),
+                            Price = dr.GetDecimal("price"),
+                        });
+                    }
                 }
             }
-
-            connection.Close();
+                
+            
         }
         catch (MySqlException ex)
         {
@@ -82,5 +81,10 @@ public class ServiceRepository : BaseRep
         }
 
         return s;
+    }
+    public void Dispose()
+    {
+        base.Dispose();
+        CloseConnection();
     }
 }
