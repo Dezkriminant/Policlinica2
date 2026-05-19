@@ -35,7 +35,6 @@ public partial class ServiceViewModel : ViewModelBase
         surname = clientSurname;
         Services =  new ObservableCollection<ServiceSelected>(repository.GetServicesByDoctors(selectedDoctor.Id).Select(service => new ServiceSelected(service)).ToList());
         
-        //Console.WriteLine(CurrentUser.login);
     }
 
 
@@ -54,15 +53,11 @@ public partial class ServiceViewModel : ViewModelBase
 
         if (selectedServices.Count == 0)
         {
-            // Можно добавить уведомление об ошибке
             return;
         }
-
-        // Получаем репозитории для передачи в ViewModel
+        
         var recordRepository = _provider.GetRequiredService<RecordRep>();
         var recordItemsRepository = _provider.GetRequiredService<RecordItemsRepository>();
-
-        // Создаем ViewModel для показа подтверждения записи
         var vm = ActivatorUtilities.CreateInstance<RecordItemsViewModel>(_provider, 
             _navigation, _selectedDoctor, selectedServices, recordRepository, recordItemsRepository, Name, Surname);
         

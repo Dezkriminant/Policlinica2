@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using MySqlConnector;
@@ -82,6 +82,40 @@ public class ServiceRepository : BaseRep
 
         return s;
     }
+
+    public List<Service> GetServicesByTest()
+    {
+        List<Service> result = new List<Service>();
+        string sql = "select * from services";
+        try
+        {
+            using (var mc = new MySqlCommand(sql, connection))
+            using (var dr = mc.ExecuteReader())
+            {
+                while (dr.Read())
+                {
+                    result.Add(new Service
+                    {
+                        Id = dr.GetInt32("id"),
+                        DoctorId = dr.GetInt32("doctor_id"),
+                        ServiceName = dr.GetString("service_name"),
+                        Price = dr.GetDecimal("price"),
+                    });
+                }
+            }
+        }
+        catch (MySqlException ex)
+        {
+            Console.WriteLine(ex);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return result;
+    }
+
     public void Dispose()
     {
         base.Dispose();

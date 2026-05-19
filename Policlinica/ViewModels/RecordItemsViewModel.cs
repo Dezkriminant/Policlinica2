@@ -41,7 +41,6 @@ public partial class RecordItemsViewModel : ViewModelBase
         clientName = name;
         clientSurname = surname;
         
-        // Расчет общей суммы
         totalAmount = selectedServices.Sum(s => s.Price);
     }
 
@@ -62,12 +61,10 @@ public partial class RecordItemsViewModel : ViewModelBase
 
         try
         {
-            // Используем первую услугу
             int mainServiceId = selectedServices[0].Id;
             Console.WriteLine($"Main service ID: {mainServiceId}");
             Console.WriteLine($"Selected services count: {selectedServices.Count}");
-
-            // Создаем запись с данными КЛИЕНТА
+            
             var record = new Record
             {
                 ClientName = clientName,
@@ -80,8 +77,7 @@ public partial class RecordItemsViewModel : ViewModelBase
             };
 
             Console.WriteLine($"Saving record: Name={record.ClientName}, Surname={record.ClientSurname}, DoctorId={record.DoctorId}, UserId={record.UserId}, ServiceId={record.ServiceId}");
-
-            // Сохраняем запись в БД и получаем ID
+            
             int recordId = _recordRepository.InsertRecord(record);
             
             if (recordId <= 0)
@@ -92,8 +88,7 @@ public partial class RecordItemsViewModel : ViewModelBase
             }
 
             Console.WriteLine($"Record saved with ID: {recordId}");
-
-            // Сохраняем все выбранные услуги в record_items
+            
             foreach (var service in selectedServices)
             {
                 Console.WriteLine($"Saving record item for service: {service.Id} (price: {service.Price})");
@@ -114,7 +109,6 @@ public partial class RecordItemsViewModel : ViewModelBase
 
             StatusMessage = "Запись успешно сохранена!";
             
-            // Переходим в админ-панель
             var vm = ActivatorUtilities.CreateInstance<AdminViewModel>(_provider);
             _navigation.Navigate(vm);
         }

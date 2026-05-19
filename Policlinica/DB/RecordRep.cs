@@ -77,8 +77,7 @@ public class RecordRep:BaseRep
                 mc.ExecuteNonQuery();
                 Console.WriteLine($"ExecuteNonQuery returned");
             }
-
-            // Получаем ID последней вставленной записи
+            
             string lastIdSql = "SELECT LAST_INSERT_ID() as last_id";
             using (var mc = new MySqlCommand(lastIdSql, connection))
             {
@@ -117,11 +116,44 @@ public class RecordRep:BaseRep
         return -1;
     }
 
+    public bool UpdateRecord(Record record)
+    {
+        string sql = @"update `records` 
+                       set client_name = @client_name, 
+                           client_surname = @client_surname, 
+                           doctor_id = @doctor_id, 
+                           service_id = @service_id, 
+                           total_amount = @total_amount, 
+                           record_date = @record_date
+                       where id = @id";
+        try
+        {
+            using (var mc = new MySqlCommand(sql, connection))
+            {
+                mc.Parameters.AddWithValue("@id", record.Id);
+                mc.Parameters.AddWithValue("@client_name", record.ClientName ?? "");
+                mc.Parameters.AddWithValue("@client_surname", record.ClientSurname ?? "");
+                mc.Parameters.AddWithValue("@doctor_id", record.DoctorId);
+                mc.Parameters.AddWithValue("@service_id", record.ServiceId);
+                mc.Parameters.AddWithValue("@total_amount", record.TotalAmount);
+                mc.Parameters.AddWithValue("@record_date", record.RecordDate);
+                
+                int rows = mc.ExecuteNonQuery();
+                Console.WriteLine($"Updated {rows} rows");
+                return rows > 0;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error updating record: {e}");
+        }
+        return false;
+    }
+
     public bool Delete(int id)
     {
         try
         {
-            // Сначала удаляем все связанные record_items
             string deleteItemsSql = @"delete from `record_items` where `record_id` = @id";
             using (var mc = new MySqlCommand(deleteItemsSql, connection))
             {
@@ -129,8 +161,7 @@ public class RecordRep:BaseRep
                 mc.ExecuteNonQuery();
                 Console.WriteLine($"Deleted record items for record {id}");
             }
-
-            // Затем удаляем саму запись
+            
             string deleteRecordSql = @"delete from `records` where `id` = @id";
             using (var mc = new MySqlCommand(deleteRecordSql, connection))
             {

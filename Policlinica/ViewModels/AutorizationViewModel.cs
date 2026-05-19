@@ -40,8 +40,7 @@ public partial class AutorizationViewModel : ViewModelBase
             Eror = "Неверный логин или пароль";
             return;
         }
-
-        // Копируем все данные авторизованного пользователя в синглтон
+        
         _user.Id = SpUser[0].Id;
         _user.Name = SpUser[0].Name;
         _user.Surname = SpUser[0].Surname;

@@ -35,8 +35,7 @@ public partial class SugarCheckViewModel : ViewModelBase
             StatusMessage = "Ошибка: вид не инициализирован";
             return;
         }
-
-        // Получаем значения из TextBox'ов
+        
         var weightInput = _view.FindControl<TextBox>("WeightInput");
         var heightInput = _view.FindControl<TextBox>("HeightInput");
 
@@ -61,7 +60,6 @@ public partial class SugarCheckViewModel : ViewModelBase
 
         try
         {
-            // Расчет BMI (индекс массы тела)
             decimal heightInMeters = height / 100;
             decimal bmi = weight / (heightInMeters * heightInMeters);
 

@@ -28,7 +28,6 @@ sealed class Program
                 s.Configure<DatabaseConnection>(c.Configuration.
                     GetSection("DatabaseConnection"));
                 
-                    //окна
                 s.AddTransient<AutorizationView>();
                 s.AddTransient<AutorizationViewModel>();
                 
@@ -51,8 +50,7 @@ sealed class Program
                  s.AddTransient<DoctorViewModel>();
                  
                  s.AddTransient<RecordItemsView>();
-               //  s.AddTransient<RecordItemsViewModel>();
-                //Репозитории
+               
                 s.AddTransient<DoctorRepository>();
                 
                 s.AddTransient<UserRepository>();
