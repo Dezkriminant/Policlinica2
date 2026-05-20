@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,7 @@ public partial class AdminViewModel : ViewModelBase
     private readonly UserRepository _userRepository;
     private readonly DoctorRepository _doctorRepository;
     private readonly ServiceRepository _serviceRepository;
+    private List<Record> _allRecords; // Сохраняем все записи для поиска
 
     [ObservableProperty] string _login;
     [ObservableProperty] int _id;
@@ -27,6 +29,7 @@ public partial class AdminViewModel : ViewModelBase
     [ObservableProperty] private Record _selectedRecord;
     [ObservableProperty] private ObservableCollection<User> userList = new ObservableCollection<User>();
     [ObservableProperty] string statusMessage = "";
+    [ObservableProperty] string searchText = "";
     
     [ObservableProperty] string editClientName = "";
     [ObservableProperty] string editClientSurname = "";
@@ -36,6 +39,8 @@ public partial class AdminViewModel : ViewModelBase
     [ObservableProperty] Service editSelectedService;
     [ObservableProperty] decimal editTotalAmount = 0;
     [ObservableProperty] string editRecordDate = "";
+
+    private Action _closeAction;
 
     public AdminViewModel(Navigation navigation, IServiceProvider provider, RecordRep recordRep, User user, UserRepository userRepository, DoctorRepository doctorRepository, ServiceRepository serviceRepository)
     {
@@ -54,8 +59,14 @@ public partial class AdminViewModel : ViewModelBase
             Id = obj.Id;
         }
 
-        RecordsList = new ObservableCollection<Record>(recordRep.GetRecord(Id));
+        _allRecords = recordRep.GetRecord(Id);
+        RecordsList = new ObservableCollection<Record>(_allRecords);
         DoctorList = new ObservableCollection<Doctor>(doctorRepository.GetDoctorsByTest());
+    }
+
+    public void SetCloseAction(Action closeAction)
+    {
+        _closeAction = closeAction;
     }
 
     partial void OnSelectedRecordChanged(Record value)
@@ -91,6 +102,34 @@ public partial class AdminViewModel : ViewModelBase
         {
             EditTotalAmount = value.Price;
         }
+    }
+
+    [RelayCommand]
+    void SearchRecords()
+    {
+        if (string.IsNullOrWhiteSpace(SearchText))
+        {
+            // Если поле поиска пусто, показываем все записи
+            RecordsList = new ObservableCollection<Record>(_allRecords);
+            return;
+        }
+
+        // Фильтруем записи по имени или фамилии клиента
+        var filteredRecords = _allRecords
+            .Where(r => r.ClientName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                       r.ClientSurname.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        RecordsList = new ObservableCollection<Record>(filteredRecords);
+        StatusMessage = $"Найдено {filteredRecords.Count} записей";
+    }
+
+    [RelayCommand]
+    void ShowAllRecords()
+    {
+        SearchText = "";
+        RecordsList = new ObservableCollection<Record>(_allRecords);
+        StatusMessage = $"Показано {_allRecords.Count} записей";
     }
 
     [RelayCommand]
@@ -131,9 +170,11 @@ public partial class AdminViewModel : ViewModelBase
             if (updated)
             {
                 StatusMessage = "Запись успешно обновлена";
-                RecordsList = new ObservableCollection<Record>(_recordRep.GetRecord(Id));
+                _allRecords = _recordRep.GetRecord(Id);
+                RecordsList = new ObservableCollection<Record>(_allRecords);
                 SelectedRecord = null;
                 ClearEditFields();
+                SearchText = "";
             }
             else
             {
@@ -174,9 +215,11 @@ public partial class AdminViewModel : ViewModelBase
             if (deleted)
             {
                 StatusMessage = "Запись успешно удалена";
-                RecordsList = new ObservableCollection<Record>(_recordRep.GetRecord(Id));
+                _allRecords = _recordRep.GetRecord(Id);
+                RecordsList = new ObservableCollection<Record>(_allRecords);
                 SelectedRecord = null;
                 ClearEditFields();
+                SearchText = "";
             }
             else
             {
@@ -202,6 +245,13 @@ public partial class AdminViewModel : ViewModelBase
     {
         var vm = ActivatorUtilities.CreateInstance<SugarCheckViewModel>(_provider);
         _navigation.Navigate(vm);
+    }
+
+    [RelayCommand]
+    void ExitApplication()
+    {
+        Console.WriteLine("Exit button clicked");
+        _closeAction?.Invoke();
     }
 
 }

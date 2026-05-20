@@ -7,64 +7,75 @@
         x:Class="Policlinica.Views.RecordItemsView"
         x:DataType="viewModels:RecordItemsViewModel">
     
-    <StackPanel Margin="30" Spacing="20">
-        <TextBlock Text="Подтверждение записи" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
-        
-        <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
-            <StackPanel Spacing="10">
-                <TextBlock Text="Клиент:" FontWeight="Bold" FontSize="16"/>
-                <TextBlock Text="{Binding ClientName}" FontSize="14"/>
-                <TextBlock Text="{Binding ClientSurname}" FontSize="14"/>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="30" Spacing="20">
+            <!-- Заголовок -->
+            <TextBlock Text="Подтверждение записи" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
+            
+            <!-- Информация о клиенте -->
+            <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Клиент:" FontWeight="Bold" FontSize="16"/>
+                    <TextBlock Text="{Binding ClientName}" FontSize="14"/>
+                    <TextBlock Text="{Binding ClientSurname}" FontSize="14"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Информация о враче -->
+            <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Врач:" FontWeight="Bold" FontSize="16"/>
+                    <TextBlock Text="{Binding SelectedDoctor.Title}" FontSize="14"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Выбранные услуги -->
+            <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Выбранные услуги:" FontWeight="Bold" FontSize="16"/>
+                    
+                    <ScrollViewer MaxHeight="200" VerticalScrollBarVisibility="Auto">
+                        <ListBox ItemsSource="{Binding SelectedServices}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Spacing="20" Margin="5">
+                                        <TextBlock Text="{Binding ServiceName}" Width="300" FontSize="13"/>
+                                        <TextBlock Text="{Binding Price}" Width="100" FontSize="13"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </ScrollViewer>
+                </StackPanel>
+            </Border>
+
+            <!-- Итоговая сумма -->
+            <Border BorderBrush="DodgerBlue" BorderThickness="2" Padding="20" CornerRadius="5" Background="WhiteSmoke">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="30">
+                    <TextBlock Text="Итого:" FontWeight="Bold" FontSize="16"/>
+                    <TextBlock Text="{Binding TotalAmount}" FontSize="18" FontWeight="Bold" Foreground="DodgerBlue"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Сообщение статуса -->
+            <TextBlock Text="{Binding StatusMessage}" Foreground="Green" FontSize="14" TextWrapping="Wrap"/>
+
+            <!-- Кнопки -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
+                <Button Content="Сохранить запись" 
+                        FontSize="16" 
+                        Padding="20,12" 
+                        Background="Green" 
+                        Foreground="White" 
+                        Command="{Binding SaveToDatabaseCommand}"/>
+                <Button Content="Назад" 
+                        FontSize="16" 
+                        Padding="20,12" 
+                        Background="Gray" 
+                        Foreground="White" 
+                        Command="{Binding GoBackCommand}"/>
             </StackPanel>
-        </Border>
-        
-        <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
-            <StackPanel Spacing="10">
-                <TextBlock Text="Врач:" FontWeight="Bold" FontSize="16"/>
-                <TextBlock Text="{Binding SelectedDoctor.Title}" FontSize="14"/>
-            </StackPanel>
-        </Border>
-        
-        <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
-            <StackPanel Spacing="10">
-                <TextBlock Text="Выбранные услуги:" FontWeight="Bold" FontSize="16"/>
-                
-                <ListBox ItemsSource="{Binding SelectedServices}" MinHeight="150">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Spacing="20" Margin="5">
-                                <TextBlock Text="{Binding ServiceName}" Width="300" FontSize="13"/>
-                                <TextBlock Text="{Binding Price}" Width="100" FontSize="13"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </StackPanel>
-        </Border>
-        
-        <Border BorderBrush="DodgerBlue" BorderThickness="2" Padding="20" CornerRadius="5" Background="WhiteSmoke">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="30">
-                <TextBlock Text="Итого:" FontWeight="Bold" FontSize="16"/>
-                <TextBlock Text="{Binding TotalAmount}" FontSize="18" FontWeight="Bold" Foreground="DodgerBlue"/>
-            </StackPanel>
-        </Border>
-        
-        <TextBlock Text="{Binding StatusMessage}" Foreground="Green" FontSize="14" TextWrapping="Wrap"/>
-        
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
-            <Button Content="Сохранить запись" 
-                    FontSize="16" 
-                    Padding="20,12" 
-                    Background="Green" 
-                    Foreground="White" 
-                    Command="{Binding SaveToDatabaseCommand}"/>
-            <Button Content="Вернуться" 
-                    FontSize="16" 
-                    Padding="20,12" 
-                    Background="Gray" 
-                    Foreground="White" 
-                    Command="{Binding CancelCommand}"/>
         </StackPanel>
-    </StackPanel>
+    </ScrollViewer>
     
 </UserControl>

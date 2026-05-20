@@ -1,24 +1,52 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Policlinica.ViewModels"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="500"
         x:Class="Policlinica.Views.RegistrationView"
         x:DataType="viewModels:RegistrationViewModel">
+
+    <UserControl.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="CaretBrush" Value="Red"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+    </UserControl.Styles>
   
-    <Border BorderBrush="Aqua" CornerRadius="8"  BorderThickness="2"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
-        <StackPanel Spacing="5">
-           <Label FontWeight="Bold" Content="Регистрация" HorizontalAlignment="Center"/>
-           <TextBlock Text="Логин" HorizontalAlignment="Center"/>
-           <TextBox Watermark="Придумайте имя" Text="{Binding Login}"/>
-           <TextBlock Text="Пароль" HorizontalAlignment="Center"/>
-           <TextBox Watermark="Придумайте пароль" Text="{Binding Password}"/>
-           <TextBlock Text="{Binding Eror}" Foreground="Red"/>
-           <StackPanel Orientation="Horizontal">
-               <Button Content= "Зарегистрироваться" Command="{Binding RegistrationCommand}"/>
-               <HyperlinkButton Command="{Binding OpenAutorizationCommand}" Content="Авторизоваться"/>
-           </StackPanel>
+    <Border BorderBrush="DodgerBlue" CornerRadius="8" BorderThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" Padding="30" Background="White">
+        <StackPanel Spacing="15" Width="400">
+            <TextBlock Text="Регистрация" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Foreground="Black"/>
+            
+            <StackPanel Spacing="8">
+                <TextBlock Text="Логин (макс. 15 символов):" FontWeight="Bold" Foreground="Black"/>
+                <TextBox Watermark="Придумайте имя" Text="{Binding Login}" MaxLength="15"/>
+            </StackPanel>
+            
+            <StackPanel Spacing="8">
+                <TextBlock Text="Пароль (макс. 8 символов):" FontWeight="Bold" Foreground="Black"/>
+                <TextBox Watermark="Придумайте пароль" Text="{Binding Password}" MaxLength="8"/>
+            </StackPanel>
+            
+            <TextBlock Text="{Binding Eror}" Foreground="Red" FontSize="12" TextWrapping="Wrap"/>
+            
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="15" Margin="0,15,0,0">
+                <Button Content="Зарегистрироваться" 
+                        FontSize="14" 
+                        Padding="15,10" 
+                        Background="Green" 
+                        Foreground="White"
+                        Command="{Binding RegistrationCommand}"/>
+                <HyperlinkButton Content="Авторизоваться" 
+                                 FontSize="14"
+                                 Foreground="Blue"
+                                 Command="{Binding OpenAutorizationCommand}"/>
+            </StackPanel>
        </StackPanel>
     </Border>
 </UserControl>

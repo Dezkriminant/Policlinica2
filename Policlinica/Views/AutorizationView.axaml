@@ -3,26 +3,50 @@
         xmlns:vm="using:Policlinica.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="500"
         x:Class="Policlinica.Views.AutorizationView"
         x:DataType="vm:AutorizationViewModel">
 
-    <Border BorderBrush="Aqua" CornerRadius="8"  BorderThickness="2"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"> 
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        
-        <TextBlock Text="Вход" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
-        
-        <TextBlock Text="Логин:" />
-        <TextBox Text="{Binding Login}"/>
-        <TextBlock Text="Пароль:" />
-        <TextBox Text="{Binding Password}"/>
-        <TextBlock Text="{Binding Eror}" Foreground="Red"/>
-        <StackPanel Orientation="Horizontal">
-            <Button Content="Продолжить" 
-                    Command="{Binding ContiCommand}"/>
-            <HyperlinkButton Content="Регистрация" 
-                    Command="{Binding OpenRegWinCommand}"/>
-         </StackPanel>
-    </StackPanel>
+    <UserControl.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="CaretBrush" Value="Red"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Border BorderBrush="DodgerBlue" CornerRadius="8" BorderThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" Padding="30" Background="White">
+        <StackPanel Spacing="15" Width="400">
+            <TextBlock Text="Авторизация" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Foreground="Black"/>
+            
+            <StackPanel Spacing="8">
+                <TextBlock Text="Логин:" FontWeight="Bold" Foreground="Black"/>
+                <TextBox Text="{Binding Login}" Watermark="Введите логин"/>
+            </StackPanel>
+            
+            <StackPanel Spacing="8">
+                <TextBlock Text="Пароль:" FontWeight="Bold" Foreground="Black"/>
+                <TextBox Text="{Binding Password}" Watermark="Введите пароль"/>
+            </StackPanel>
+            
+            <TextBlock Text="{Binding Eror}" Foreground="Red" FontSize="12" TextWrapping="Wrap"/>
+            
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="15" Margin="0,15,0,0">
+                <Button Content="Продолжить" 
+                        FontSize="14" 
+                        Padding="15,10" 
+                        Background="Blue" 
+                        Foreground="White"
+                        Command="{Binding ContiCommand}"/>
+                <HyperlinkButton Content="Регистрация" 
+                                 FontSize="14"
+                                 Foreground="Blue"
+                                 Command="{Binding OpenRegWinCommand}"/>
+            </StackPanel>
+        </StackPanel>
     </Border>
 </UserControl>

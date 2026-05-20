@@ -34,7 +34,6 @@ public partial class ServiceViewModel : ViewModelBase
         name = clientName;
         surname = clientSurname;
         Services =  new ObservableCollection<ServiceSelected>(repository.GetServicesByDoctors(selectedDoctor.Id).Select(service => new ServiceSelected(service)).ToList());
-        
     }
 
 
@@ -55,12 +54,20 @@ public partial class ServiceViewModel : ViewModelBase
         {
             return;
         }
-        
+
         var recordRepository = _provider.GetRequiredService<RecordRep>();
         var recordItemsRepository = _provider.GetRequiredService<RecordItemsRepository>();
+
         var vm = ActivatorUtilities.CreateInstance<RecordItemsViewModel>(_provider, 
             _navigation, _selectedDoctor, selectedServices, recordRepository, recordItemsRepository, Name, Surname);
         
+        _navigation.Navigate(vm);
+    }
+
+    [RelayCommand]
+    public void GoBack()
+    {
+        var vm = ActivatorUtilities.CreateInstance<DoctorViewModel>(_provider);
         _navigation.Navigate(vm);
     }
 }

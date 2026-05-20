@@ -39,7 +39,8 @@
                                 FontSize="16" 
                                 Padding="20,12" 
                                 Background="Gray" 
-                                Foreground="White"/>
+                                Foreground="White"
+                                Command="{Binding GoBackCommand}"/>
                 </StackPanel>
         </StackPanel>
         

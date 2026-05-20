@@ -1,6 +1,8 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Templates;
 using Policlinica.ViewModels;
 using Policlinica.Views;
@@ -31,6 +33,16 @@ public class ViewLocator : IDataTemplate
             if (param is SugarCheckViewModel sugarVm && view is SugarCheckView sugarView)
             {
                 sugarVm.SetView(sugarView);
+            }
+            
+            // Специальная обработка для AdminViewModel
+            if (param is AdminViewModel adminVm)
+            {
+                // Получаем главное окно из ApplicationLifetime
+                if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                {
+                    adminVm.SetCloseAction(() => desktop.MainWindow?.Close());
+                }
             }
             
             return view;

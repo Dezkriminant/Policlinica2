@@ -24,8 +24,6 @@ public partial class DoctorViewModel : ViewModelBase
         _provider = provider;
         _doctorList = new ObservableCollection<Doctor>(repository.GetDoctorsByTest());
         _navigation = navigation;
-        
-        
     }
 
     [RelayCommand]
@@ -41,6 +39,13 @@ public partial class DoctorViewModel : ViewModelBase
         
         var repository = _provider.GetRequiredService<ServiceRepository>();
         var vm = ActivatorUtilities.CreateInstance<ServiceViewModel>(_provider, SelectedDoctor, repository, Name, Surname);
+        _navigation.Navigate(vm);
+    }
+
+    [RelayCommand]
+    public void GoBack()
+    {
+        var vm = ActivatorUtilities.CreateInstance<AdminViewModel>(_provider);
         _navigation.Navigate(vm);
     }
     

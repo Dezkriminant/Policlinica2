@@ -11,6 +11,7 @@
         
         <TextBlock Text="Создание записи" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
         
+        <!-- Ввод имени клиента -->
         <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
             <StackPanel Spacing="10">
                 <TextBlock Text="Имя клиента:" FontWeight="Bold" FontSize="14"/>
@@ -18,13 +19,15 @@
             </StackPanel>
         </Border>
         
+        <!-- Ввод фамилии клиента -->
         <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
             <StackPanel Spacing="10">
                 <TextBlock Text="Фамилия клиента:" FontWeight="Bold" FontSize="14"/>
                 <TextBox Text="{Binding Surname}" Padding="10" FontSize="13" Watermark="Введите фамилию"/>
             </StackPanel>
         </Border>
-        
+
+        <!-- Выбор врача -->
         <Border BorderBrush="LightGray" BorderThickness="1" Padding="15" CornerRadius="5">
             <StackPanel Spacing="10">
                 <TextBlock Text="Выберите врача:" FontWeight="Bold" FontSize="14"/>
@@ -35,13 +38,21 @@
                           FontSize="13"/>
             </StackPanel>
         </Border>
-        
-        <Button Content="Далее" 
-                FontSize="16" 
-                Padding="20,12" 
-                Background="Green" 
-                Foreground="White"
-                HorizontalAlignment="Center"
-                Command="{Binding StartTestCommand}"/>
+
+        <!-- Кнопки -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
+            <Button Content="Далее" 
+                    FontSize="16" 
+                    Padding="20,12" 
+                    Background="Green" 
+                    Foreground="White"
+                    Command="{Binding StartTestCommand}"/>
+            <Button Content="Назад" 
+                    FontSize="16" 
+                    Padding="20,12" 
+                    Background="Gray" 
+                    Foreground="White"
+                    Command="{Binding GoBackCommand}"/>
+        </StackPanel>
     </StackPanel>
 </UserControl>

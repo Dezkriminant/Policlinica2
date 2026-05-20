@@ -64,7 +64,7 @@ public partial class RecordItemsViewModel : ViewModelBase
             int mainServiceId = selectedServices[0].Id;
             Console.WriteLine($"Main service ID: {mainServiceId}");
             Console.WriteLine($"Selected services count: {selectedServices.Count}");
-            
+
             var record = new Record
             {
                 ClientName = clientName,
@@ -77,7 +77,7 @@ public partial class RecordItemsViewModel : ViewModelBase
             };
 
             Console.WriteLine($"Saving record: Name={record.ClientName}, Surname={record.ClientSurname}, DoctorId={record.DoctorId}, UserId={record.UserId}, ServiceId={record.ServiceId}");
-            
+
             int recordId = _recordRepository.InsertRecord(record);
             
             if (recordId <= 0)
@@ -88,7 +88,7 @@ public partial class RecordItemsViewModel : ViewModelBase
             }
 
             Console.WriteLine($"Record saved with ID: {recordId}");
-            
+
             foreach (var service in selectedServices)
             {
                 Console.WriteLine($"Saving record item for service: {service.Id} (price: {service.Price})");
@@ -120,7 +120,7 @@ public partial class RecordItemsViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    public void Cancel()
+    public void GoBack()
     {
         var repository = _provider.GetRequiredService<ServiceRepository>();
         var vm = ActivatorUtilities.CreateInstance<ServiceViewModel>(_provider, selectedDoctor, repository, clientName, clientSurname);
