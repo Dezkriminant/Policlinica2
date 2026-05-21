@@ -21,7 +21,8 @@ public partial class AdminViewModel : ViewModelBase
     private readonly UserRepository _userRepository;
     private readonly DoctorRepository _doctorRepository;
     private readonly ServiceRepository _serviceRepository;
-    private List<Record> _allRecords; // Сохраняем все записи для поиска
+    private List<Record> _allRecords;
+    private Window _parentWindow;
 
     [ObservableProperty] string _login;
     [ObservableProperty] int _id;
@@ -30,15 +31,6 @@ public partial class AdminViewModel : ViewModelBase
     [ObservableProperty] private ObservableCollection<User> userList = new ObservableCollection<User>();
     [ObservableProperty] string statusMessage = "";
     [ObservableProperty] string searchText = "";
-    
-    [ObservableProperty] string editClientName = "";
-    [ObservableProperty] string editClientSurname = "";
-    [ObservableProperty] ObservableCollection<Doctor> doctorList = new();
-    [ObservableProperty] Doctor editSelectedDoctor;
-    [ObservableProperty] ObservableCollection<Service> editServiceList = new(); 
-    [ObservableProperty] Service editSelectedService;
-    [ObservableProperty] decimal editTotalAmount = 0;
-    [ObservableProperty] string editRecordDate = "";
 
     private Action _closeAction;
 
@@ -61,7 +53,6 @@ public partial class AdminViewModel : ViewModelBase
 
         _allRecords = recordRep.GetRecord(Id);
         RecordsList = new ObservableCollection<Record>(_allRecords);
-        DoctorList = new ObservableCollection<Doctor>(doctorRepository.GetDoctorsByTest());
     }
 
     public void SetCloseAction(Action closeAction)
@@ -69,39 +60,9 @@ public partial class AdminViewModel : ViewModelBase
         _closeAction = closeAction;
     }
 
-    partial void OnSelectedRecordChanged(Record value)
+    public void SetParentWindow(Window parentWindow)
     {
-        if (value != null)
-        {
-            EditClientName = value.ClientName;
-            EditClientSurname = value.ClientSurname;
-            EditSelectedDoctor = DoctorList.FirstOrDefault(d => d.Id == value.DoctorId);
-            EditTotalAmount = value.TotalAmount;
-            EditRecordDate = value.RecordDate.ToString("yyyy-MM-dd");
-        }
-    }
-
-    partial void OnEditSelectedDoctorChanged(Doctor value)
-    {
-        if (value != null)
-        {
-            var services = _serviceRepository.GetServicesByDoctors(value.Id);
-            EditServiceList = new ObservableCollection<Service>(services);
-            EditSelectedService = null; 
-        }
-        else
-        {
-            EditServiceList.Clear();
-            EditSelectedService = null;
-        }
-    }
-
-    partial void OnEditSelectedServiceChanged(Service value)
-    {
-        if (value != null)
-        {
-            EditTotalAmount = value.Price;
-        }
+        _parentWindow = parentWindow;
     }
 
     [RelayCommand]
@@ -109,12 +70,10 @@ public partial class AdminViewModel : ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(SearchText))
         {
-            // Если поле поиска пусто, показываем все записи
             RecordsList = new ObservableCollection<Record>(_allRecords);
             return;
         }
 
-        // Фильтруем записи по имени или фамилии клиента
         var filteredRecords = _allRecords
             .Where(r => r.ClientName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
                        r.ClientSurname.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
@@ -125,78 +84,29 @@ public partial class AdminViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    void ShowAllRecords()
-    {
-        SearchText = "";
-        RecordsList = new ObservableCollection<Record>(_allRecords);
-        StatusMessage = $"Показано {_allRecords.Count} записей";
-    }
-
-    [RelayCommand]
-    void UpdateRecord()
+    void EditRecord()
     {
         if (SelectedRecord == null)
         {
-            StatusMessage = "Выберите запись для обновления";
+            StatusMessage = "Выберите запись для редактирования";
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(EditClientName) || string.IsNullOrWhiteSpace(EditClientSurname))
+        var editWindow = new EditRecordWindow();
+        var editViewModel = ActivatorUtilities.CreateInstance<EditRecordViewModel>(_provider, SelectedRecord, _recordRep, _doctorRepository, _serviceRepository);
+        editWindow.DataContext = editViewModel;
+        
+        editViewModel.SetCloseAction(() =>
         {
-            StatusMessage = "Имя и фамилия клиента обязательны";
-            return;
-        }
-
-        if (EditSelectedDoctor == null || EditSelectedService == null)
-        {
-            StatusMessage = "Выберите врача и услугу";
-            return;
-        }
-
-        try
-        {
-            SelectedRecord.ClientName = EditClientName;
-            SelectedRecord.ClientSurname = EditClientSurname;
-            SelectedRecord.DoctorId = EditSelectedDoctor.Id;
-            SelectedRecord.ServiceId = EditSelectedService.Id;
-            SelectedRecord.TotalAmount = EditTotalAmount;
-            
-            if (DateTime.TryParse(EditRecordDate, out DateTime recordDate))
-            {
-                SelectedRecord.RecordDate = recordDate;
-            }
-
-            bool updated = _recordRep.UpdateRecord(SelectedRecord);
-            if (updated)
-            {
-                StatusMessage = "Запись успешно обновлена";
-                _allRecords = _recordRep.GetRecord(Id);
-                RecordsList = new ObservableCollection<Record>(_allRecords);
-                SelectedRecord = null;
-                ClearEditFields();
-                SearchText = "";
-            }
-            else
-            {
-                StatusMessage = "Ошибка при обновлении записи";
-            }
-        }
-        catch (Exception ex)
-        {
-            StatusMessage = $"Ошибка: {ex.Message}";
-            Console.WriteLine($"Error updating record: {ex}");
-        }
-    }
-
-    private void ClearEditFields()
-    {
-        EditClientName = "";
-        EditClientSurname = "";
-        EditSelectedDoctor = null;
-        EditServiceList.Clear();
-        EditSelectedService = null;
-        EditTotalAmount = 0;
-        EditRecordDate = "";
+            editWindow.Close();
+            _allRecords = _recordRep.GetRecord(Id);
+            RecordsList = new ObservableCollection<Record>(_allRecords);
+            SelectedRecord = null;
+            SearchText = "";
+            StatusMessage = "Запись обновлена";
+        });
+        
+        editWindow.Show(_parentWindow);
     }
 
     [RelayCommand]
@@ -205,7 +115,6 @@ public partial class AdminViewModel : ViewModelBase
         if (SelectedRecord == null)
         {
             StatusMessage = "Выберите запись для удаления";
-            Console.WriteLine("No record selected for deletion");
             return;
         }
 
@@ -218,7 +127,6 @@ public partial class AdminViewModel : ViewModelBase
                 _allRecords = _recordRep.GetRecord(Id);
                 RecordsList = new ObservableCollection<Record>(_allRecords);
                 SelectedRecord = null;
-                ClearEditFields();
                 SearchText = "";
             }
             else
@@ -248,10 +156,23 @@ public partial class AdminViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    void GoBloodSugarInput()
+    {
+        if (SelectedRecord == null)
+        {
+            StatusMessage = "Выберите запись пациента для добавления измерений сахара";
+            return;
+        }
+
+        var vm = ActivatorUtilities.CreateInstance<BloodSugarInputViewModel>(_provider);
+        vm.SetSelectedRecord(SelectedRecord);
+        _navigation.Navigate(vm);
+    }
+
+    [RelayCommand]
     void ExitApplication()
     {
         Console.WriteLine("Exit button clicked");
         _closeAction?.Invoke();
     }
-
 }

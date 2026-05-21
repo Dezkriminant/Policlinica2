@@ -42,6 +42,7 @@ public class ViewLocator : IDataTemplate
                 if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                 {
                     adminVm.SetCloseAction(() => desktop.MainWindow?.Close());
+                    adminVm.SetParentWindow(desktop.MainWindow as Window);
                 }
             }
             

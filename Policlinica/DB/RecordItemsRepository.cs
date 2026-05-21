@@ -71,4 +71,23 @@ public class RecordItemsRepository : BaseRep
         }
         return false;
     }
+
+    public bool DeleteByRecordId(int recordId)
+    {
+        string sql = "DELETE FROM record_items WHERE record_id = @record_id";
+        try
+        {
+            using (var mc = new MySqlCommand(sql, connection))
+            {
+                mc.Parameters.AddWithValue("@record_id", recordId);
+                mc.ExecuteNonQuery();
+            }
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+        return false;
+    }
 }

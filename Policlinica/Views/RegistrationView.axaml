@@ -39,8 +39,9 @@
                 <Button Content="Зарегистрироваться" 
                         FontSize="14" 
                         Padding="15,10" 
-                        Background="Green" 
+                        FontWeight="Bold"
                         Foreground="White"
+                        Background="LimeGreen"
                         Command="{Binding RegistrationCommand}"/>
                 <HyperlinkButton Content="Авторизоваться" 
                                  FontSize="14"

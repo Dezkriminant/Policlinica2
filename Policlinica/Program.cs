@@ -1,4 +1,4 @@
-﻿using Avalonia;
+using Avalonia;
 using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +34,13 @@ sealed class Program
                 s.AddTransient<AdminView>();
                 s.AddTransient<AdminViewModel>();
                 
+                s.AddTransient<EditRecordWindow>();
+                s.AddTransient<EditRecordView>();
+                s.AddTransient<EditRecordViewModel>();
+                
+                s.AddTransient<BloodSugarInputView>();
+                s.AddTransient<BloodSugarInputViewModel>();
+                
                 s.AddTransient<RegistrationViewModel>();
                 s.AddTransient<RegistrationView>();
                 
@@ -58,6 +65,8 @@ sealed class Program
                 s.AddTransient<ServiceRepository>();
                 
                 s.AddTransient<RecordRep>();
+                
+                s.AddTransient<BloodSugarRepository>();
                 
                 s.AddSingleton<Navigation>();
 

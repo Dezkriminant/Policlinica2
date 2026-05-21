@@ -1,0 +1,97 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Policlinica.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="700"
+        x:Class="Policlinica.Views.EditRecordView"
+        x:DataType="viewModels:EditRecordViewModel">
+
+    <UserControl.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="CaretBrush" Value="Red"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+    </UserControl.Styles>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Spacing="20" Margin="20">
+            <TextBlock Text="Редактирование записи:" FontWeight="Bold" FontSize="16" Foreground="Black"/>
+            
+            <!-- Имя клиента -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="Имя клиента:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
+                <TextBox Text="{Binding EditClientName}" Padding="12" FontSize="14"/>
+            </StackPanel>
+
+            <!-- Фамилия клиента -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="Фамилия клиента:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
+                <TextBox Text="{Binding EditClientSurname}" Padding="12" FontSize="14"/>
+            </StackPanel>
+
+            <!-- Врач -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="Врач:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
+                <ComboBox ItemsSource="{Binding DoctorList}"
+                          SelectedItem="{Binding EditSelectedDoctor}"
+                          DisplayMemberBinding="{Binding Title}"
+                          Padding="12" FontSize="14" Background="White" Foreground="Black"/>
+            </StackPanel>
+
+            <!-- Услуги (CheckBox) -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="Услуги:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
+                <Border BorderBrush="LightGray" BorderThickness="1" Padding="12" CornerRadius="3" Background="White">
+                    <ItemsControl ItemsSource="{Binding EditServiceList}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,5,0,5">
+                                    <CheckBox IsChecked="{Binding IsSelected}"/>
+                                    <TextBlock Text="{Binding ServiceName}" VerticalAlignment="Center" Foreground="Black"/>
+                                    <TextBlock Text="{Binding Price, StringFormat=' ({0:F2} руб.)'}" VerticalAlignment="Center" Foreground="Gray"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Border>
+            </StackPanel>
+
+            <!-- Сумма (только для отображения) -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="Итого сумма:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
+                <Border Background="WhiteSmoke" BorderBrush="Gray" BorderThickness="1" Padding="12" CornerRadius="3">
+                    <TextBlock Text="{Binding EditTotalAmount, StringFormat='Сумма: {0:F2} руб.'}" FontSize="14" FontWeight="Bold" Foreground="Black"/>
+                </Border>
+            </StackPanel>
+
+            <!-- Дата -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="Дата (YYYY-MM-DD):" FontWeight="Bold" Foreground="Black" FontSize="14"/>
+                <TextBox Text="{Binding EditRecordDate}" Padding="12" FontSize="14"/>
+            </StackPanel>
+
+            <!-- Сообщение статуса -->
+            <TextBlock Text="{Binding StatusMessage}" Foreground="Green" FontSize="14" TextWrapping="Wrap"/>
+
+            <!-- Кнопки -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="15" Margin="0,20,0,0">
+                <Button Content="Сохранить" 
+                        FontSize="14" 
+                        Padding="18,12" 
+                        Background="Blue" 
+                        Foreground="White" 
+                        Command="{Binding SaveRecordCommand}"/>
+                <Button Content="Отмена" 
+                        FontSize="14" 
+                        Padding="18,12" 
+                        Background="Red" 
+                        Foreground="White" 
+                        Command="{Binding CancelEditCommand}"/>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -20,7 +20,7 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="30" Spacing="20">
             <!-- Заголовок с поиском и кнопкой выхода -->
-            <Grid ColumnDefinitions="*,Auto,Auto,Auto" Margin="0,0,0,10" VerticalAlignment="Center">
+            <Grid ColumnDefinitions="*,Auto,Auto" Margin="0,0,0,10" VerticalAlignment="Center">
                 <TextBlock Grid.Column="0" Text="Управление записями" FontSize="24" FontWeight="Bold" Foreground="Black" VerticalAlignment="Center"/>
                 
                 <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10">
@@ -35,15 +35,9 @@
                             Background="Blue" 
                             Foreground="White"
                             Command="{Binding SearchRecordsCommand}"/>
-                    <Button Content="Показать все" 
-                            FontSize="14" 
-                            Padding="15,8" 
-                            Background="Green" 
-                            Foreground="White"
-                            Command="{Binding ShowAllRecordsCommand}"/>
                 </StackPanel>
                 
-                <Button Grid.Column="3" Content="Выход" 
+                <Button Grid.Column="2" Content="Выход" 
                         FontSize="14" 
                         Padding="15,8" 
                         Background="Red" 
@@ -76,86 +70,41 @@
                 </StackPanel>
             </Border>
 
-            <!-- Форма редактирования -->
-            <Border BorderBrush="DodgerBlue" BorderThickness="2" Padding="20" CornerRadius="5" Background="White">
-                <StackPanel Spacing="20">
-                    <TextBlock Text="Редактирование записи:" FontWeight="Bold" FontSize="16" Foreground="Black"/>
-                    
-                    <!-- Имя клиента -->
-                    <StackPanel Spacing="8">
-                        <TextBlock Text="Имя клиента:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
-                        <TextBox Text="{Binding EditClientName}" Padding="12" FontSize="14"/>
-                    </StackPanel>
-
-                    <!-- Фамилия клиента -->
-                    <StackPanel Spacing="8">
-                        <TextBlock Text="Фамилия клиента:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
-                        <TextBox Text="{Binding EditClientSurname}" Padding="12" FontSize="14"/>
-                    </StackPanel>
-
-                    <!-- Врач -->
-                    <StackPanel Spacing="8">
-                        <TextBlock Text="Врач:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
-                        <ComboBox ItemsSource="{Binding DoctorList}"
-                                  SelectedItem="{Binding EditSelectedDoctor}"
-                                  DisplayMemberBinding="{Binding Title}"
-                                  Padding="12" FontSize="14" Background="White" Foreground="Black"/>
-                    </StackPanel>
-
-                    <!-- Услуга (зависит от выбранного врача) -->
-                    <StackPanel Spacing="8">
-                        <TextBlock Text="Услуга:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
-                        <ComboBox ItemsSource="{Binding EditServiceList}"
-                                  SelectedItem="{Binding EditSelectedService}"
-                                  DisplayMemberBinding="{Binding ServiceName}"
-                                  Padding="12" FontSize="14" Background="White" Foreground="Black"/>
-                    </StackPanel>
-
-                    <!-- Сумма (только для отображения) -->
-                    <StackPanel Spacing="8">
-                        <TextBlock Text="Сумма:" FontWeight="Bold" Foreground="Black" FontSize="14"/>
-                        <Border Background="WhiteSmoke" BorderBrush="Gray" BorderThickness="1" Padding="12" CornerRadius="3">
-                            <TextBlock Text="{Binding EditTotalAmount}" FontSize="14" Foreground="Black"/>
-                        </Border>
-                    </StackPanel>
-
-                    <!-- Дата -->
-                    <StackPanel Spacing="8">
-                        <TextBlock Text="Дата (YYYY-MM-DD):" FontWeight="Bold" Foreground="Black" FontSize="14"/>
-                        <TextBox Text="{Binding EditRecordDate}" Padding="12" FontSize="14"/>
-                    </StackPanel>
-                </StackPanel>
-            </Border>
-
             <!-- Сообщение статуса -->
             <TextBlock Text="{Binding StatusMessage}" Foreground="Green" FontSize="14" TextWrapping="Wrap"/>
            
             <!-- Кнопки -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
-                <Button Content="Обновить запись" 
-                        FontSize="16" 
-                        Padding="18,12" 
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="15" Margin="0,10,0,0">
+                <Button Content="Редактировать запись" 
+                        FontSize="14" 
+                        Padding="15,10" 
                         Background="Blue" 
                         Foreground="White" 
-                        Command="{Binding UpdateRecordCommand}"/>
+                        Command="{Binding EditRecordCommand}"/>
                 <Button Content="Удалить запись" 
-                        FontSize="16" 
-                        Padding="18,12" 
+                        FontSize="14" 
+                        Padding="15,10" 
                         Background="Red" 
                         Foreground="White" 
                         Command="{Binding DeleteRecordCommand}"/>
                 <Button Content="Добавить запись" 
-                        FontSize="16" 
-                        Padding="18,12" 
+                        FontSize="14" 
+                        Padding="15,10" 
                         Background="Green" 
                         Foreground="White" 
                         Command="{Binding GoServiceCommand}"/>
                 <Button Content="Проверка сахара" 
-                        FontSize="16" 
-                        Padding="18,12" 
+                        FontSize="14" 
+                        Padding="15,10" 
                         Background="Orange" 
                         Foreground="White" 
                         Command="{Binding GoSugarCheckCommand}"/>
+                <Button Content="Измерение сахара" 
+                        FontSize="14" 
+                        Padding="15,10" 
+                        Background="Purple" 
+                        Foreground="White" 
+                        Command="{Binding GoBloodSugarInputCommand}"/>
             </StackPanel>
         </StackPanel>
     </ScrollViewer>

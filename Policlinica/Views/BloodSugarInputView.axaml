@@ -1,0 +1,97 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Policlinica.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="800"
+        x:Class="Policlinica.Views.BloodSugarInputView"
+        x:DataType="viewModels:BloodSugarInputViewModel">
+
+    <UserControl.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="CaretBrush" Value="Red"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+    </UserControl.Styles>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="30" Spacing="20">
+            <!-- Заголовок -->
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" Text="Измерение уровня сахара в крови" FontSize="24" FontWeight="Bold" Foreground="Black"/>
+                <Button Grid.Column="1" Content="← Назад в админ панель" 
+                        FontSize="14" 
+                        Padding="15,8" 
+                        Background="Gray" 
+                        Foreground="White"
+                        Command="{Binding GoBackCommand}"/>
+            </Grid>
+
+            <!-- История измерений -->
+            <Border BorderBrush="LightGray" BorderThickness="1" Padding="0" CornerRadius="5" ClipToBounds="True">
+                <StackPanel Spacing="0">
+                    <TextBlock Text="История измерений:" 
+                               FontWeight="Bold" FontSize="16" Foreground="Black" Padding="15,15,15,10"/>
+                    <ScrollViewer MaxHeight="400" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                        <DataGrid ItemsSource="{Binding BloodSugarHistory}"
+                                  Width="800"
+                                  CanUserResizeColumns="True"
+                                  CanUserSortColumns="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding MeasurementDate}" Header="Дата/Время" Width="200"/>
+                                <DataGridTextColumn Binding="{Binding SugarLevel}" Header="Уровень сахара (мг/дл)" Width="250"/>
+                                <DataGridTemplateColumn Header="Действие" Width="150">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Удалить" 
+                                                    FontSize="12" 
+                                                    Padding="10,5" 
+                                                    Background="Red" 
+                                                    Foreground="White"
+                                                    Command="{Binding $parent[DataGrid].DataContext.DeleteRecordCommand}"
+                                                    CommandParameter="{Binding}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </ScrollViewer>
+                </StackPanel>
+            </Border>
+
+            <!-- Форма добавления измерения -->
+            <Border BorderBrush="DodgerBlue" BorderThickness="2" Padding="20" CornerRadius="5" Background="White">
+                <StackPanel Spacing="15">
+                    <TextBlock Text="Добавить новое измерение:" FontWeight="Bold" FontSize="16" Foreground="Black"/>
+                    
+                    <!-- Уровень сахара -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Уровень сахара в крови (мг/дл):" FontWeight="Bold" Foreground="Black" FontSize="14"/>
+                        <TextBox Text="{Binding SugarLevel}" Watermark="Введите значение" Padding="12" FontSize="14"/>
+                    </StackPanel>
+
+                    <!-- Дата измерения -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Дата измерения (YYYY-MM-DD):" FontWeight="Bold" Foreground="Black" FontSize="14"/>
+                        <TextBox Text="{Binding MeasurementDate}" Padding="12" FontSize="14"/>
+                    </StackPanel>
+
+                    <!-- Статус сообщение -->
+                    <TextBlock Text="{Binding StatusMessage}" Foreground="Green" FontSize="14" TextWrapping="Wrap"/>
+
+                    <!-- Кнопка сохранения -->
+                    <Button Content="Сохранить измерение" 
+                            FontSize="14" 
+                            Padding="18,12" 
+                            Background="Green" 
+                            Foreground="White"
+                            HorizontalAlignment="Center"
+                            Command="{Binding AddBloodSugarCommand}"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

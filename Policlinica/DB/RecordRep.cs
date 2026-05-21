@@ -15,41 +15,65 @@ public class RecordRep:BaseRep
     public List<Record> GetRecord(int id)
     {
         List<Record> recordsList = new();
+        Dictionary<int, Record> recordsDict = new();
 
-        string sql = @"select r.id,r.client_name, r.client_surname,r.doctor_id,r.user_id,r.total_amount,r.record_date,r.service_id,d.title,u.name,s.service_name
+        string sql = @"select r.id, r.client_name, r.client_surname, r.doctor_id, r.user_id, r.total_amount, r.record_date,
+                              d.title, u.name, s.service_name, ri.service_id
                        from records r
                        join doctors d on r.doctor_id = d.id 
-                       join users u  on r.user_id  = u.id 
-                       join services s on r.service_id = s.id
-                       where r.user_id = @id ";
+                       join users u on r.user_id = u.id 
+                       left join record_items ri on r.id = ri.record_id
+                       left join services s on ri.service_id = s.id
+                       where r.user_id = @id
+                       order by r.id, ri.service_id";
         try
         {
             using (var mc = new MySqlCommand(sql, connection))
             {
-                mc.Parameters.AddWithValue("id", id);
+                mc.Parameters.AddWithValue("@id", id);
                 using (var reader = mc.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        recordsList.Add(new Record()
+                        int recordId = reader.GetInt32("id");
+                        
+                        if (!recordsDict.ContainsKey(recordId))
                         {
-                            Id = reader.GetInt32("id"),
-                            ClientName = reader.GetString("client_name"),
-                            ClientSurname = reader.GetString("client_surname"),
-                            DoctorId = reader.GetInt32("doctor_id"),
-                            UserId = reader.GetInt32("user_id"),
-                            ServiceId = reader.GetInt32("service_id"),
-                            TotalAmount = reader.GetInt32("total_amount"),
-                            RecordDate = reader.GetDateTime("record_date"),
-                            Name = reader.GetString("name"),
-                            Title =  reader.GetString("title"),
-                            ServiceName = reader.GetString("service_name")
-                        });
+                            recordsDict[recordId] = new Record()
+                            {
+                                Id = recordId,
+                                ClientName = reader.GetString("client_name"),
+                                ClientSurname = reader.GetString("client_surname"),
+                                DoctorId = reader.GetInt32("doctor_id"),
+                                UserId = reader.GetInt32("user_id"),
+                                TotalAmount = reader.GetInt32("total_amount"),
+                                RecordDate = reader.GetDateTime("record_date"),
+                                Name = reader.GetString("name"),
+                                Title = reader.GetString("title"),
+                                ServiceName = "",
+                                Services = new List<string>()
+                            };
+                        }
+                        
+                        // Добавляем услугу если она не null
+                        if (!reader.IsDBNull(reader.GetOrdinal("service_name")))
+                        {
+                            string serviceName = reader.GetString("service_name");
+                            if (!recordsDict[recordId].Services.Contains(serviceName))
+                            {
+                                recordsDict[recordId].Services.Add(serviceName);
+                            }
+                        }
                     }
                 }
             }
             
-            
+            // Объединяем услуги в одну строку и добавляем в список
+            foreach (var record in recordsDict.Values)
+            {
+                record.ServiceName = string.Join(", ", record.Services);
+                recordsList.Add(record);
+            }
         }
         catch (Exception e)
         {
@@ -122,7 +146,6 @@ public class RecordRep:BaseRep
                        set client_name = @client_name, 
                            client_surname = @client_surname, 
                            doctor_id = @doctor_id, 
-                           service_id = @service_id, 
                            total_amount = @total_amount, 
                            record_date = @record_date
                        where id = @id";
@@ -134,7 +157,6 @@ public class RecordRep:BaseRep
                 mc.Parameters.AddWithValue("@client_name", record.ClientName ?? "");
                 mc.Parameters.AddWithValue("@client_surname", record.ClientSurname ?? "");
                 mc.Parameters.AddWithValue("@doctor_id", record.DoctorId);
-                mc.Parameters.AddWithValue("@service_id", record.ServiceId);
                 mc.Parameters.AddWithValue("@total_amount", record.TotalAmount);
                 mc.Parameters.AddWithValue("@record_date", record.RecordDate);
                 

@@ -39,8 +39,9 @@
                 <Button Content="Продолжить" 
                         FontSize="14" 
                         Padding="15,10" 
-                        Background="Blue" 
+                        FontWeight="Bold"
                         Foreground="White"
+                        Background="DodgerBlue"
                         Command="{Binding ContiCommand}"/>
                 <HyperlinkButton Content="Регистрация" 
                                  FontSize="14"

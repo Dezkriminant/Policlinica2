@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 
 namespace Policlinica.DB;
 
@@ -23,4 +24,6 @@ public class Record
     public string Title { get; set; }
     public string Name { get; set; }
     public string ServiceName { get; set; }
+    
+    public List<string> Services { get; set; } = new List<string>();
 }
